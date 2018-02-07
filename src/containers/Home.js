@@ -1,18 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+
+import { increment, decrement } from '../actions/list';
 
 class Home extends React.Component {
-    
+
     handleClick() {
-        this.props.dispatch({
-            type: 'INCREMENT'
-        })
+        this.props.actions.increment();
     }
 
     handleClickDecrement() {
-        this.props.dispatch({
-            type: 'DECREMENT'
-        })
+        this.props.actions.decrement();
     }
 
     render() {
@@ -26,6 +25,15 @@ class Home extends React.Component {
     }
 }
 
-export default connect(state => ({
-    list: state.list
-}))(Home);
+function mapStateToProps(state) {
+    return {
+        list: state.list
+    }
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({ increment, decrement }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home);
